@@ -1,33 +1,25 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import useAudioPlayer from "./useAudioPlayer";
-import { MetronomeContext } from "../context/MetronomeContext";
+import { AudioContext } from "../context/AudioContext";
 
 const useMetronome = () => {
-  const [tempo, setTempo] = useState(120);
-  const [timeSignature, setTimeSignature] = useState("4/4");
-
-  const { startPlayback, stopPlayback, updateLoop } = useAudioPlayer();
-  const { isPlaying, setIsPlaying } = useContext(MetronomeContext);
-
-  useEffect(() => {
-    updateLoop(tempo, timeSignature);
-  }, [tempo, timeSignature, updateLoop]);
+  const { isPlaying, setIsPlaying } = useContext(AudioContext);
+  const { startPlayback, stopPlayback } = useAudioPlayer();
 
   const handleClick = () => {
-    if (!isPlaying) {
-      startPlayback();
-    } else {
-      stopPlayback();
-      setIsPlaying(false);
-    }
+    // if (!isPlaying) {
+    setIsPlaying(false);
+    stopPlayback();
+    startPlayback();
+    // } else {
+    //   setIsPlaying(false);
+    //   stopPlayback();
+    // }
   };
 
   return {
     isPlaying,
-    tempo,
-    setTempo,
-    timeSignature,
-    setTimeSignature,
+    setIsPlaying,
     handleClick,
   };
 };

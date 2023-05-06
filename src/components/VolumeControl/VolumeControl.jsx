@@ -1,13 +1,14 @@
-export const VolumeControl = ({ label, volume, handleChange }) => (
+export const VolumeControl = ({ name, label, volume, handleChange }) => (
   <label>
     {label}
     <input
+      name={name}
       type="range"
       min="-60"
       max="0"
       step="0.01"
-      value={volume}
-      onChange={(e) => handleChange(e.target.value)}
+      defaultValue={volume}
+      onChange={handleChange}
     />
   </label>
 );

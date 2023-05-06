@@ -1,11 +1,11 @@
-import { MetronomeProvider } from "./context/MetronomeContext";
+import { AudioProvider } from "./context/AudioContext";
 import Metronome from "./components/Metronome/Metronome";
 
 const App = () => {
   return (
-    <MetronomeProvider>
+    <AudioProvider>
       <Metronome />
-    </MetronomeProvider>
+    </AudioProvider>
   );
 };
 

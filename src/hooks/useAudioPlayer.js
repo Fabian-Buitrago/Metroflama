@@ -1,24 +1,21 @@
 import { useEffect, useRef, useContext } from "react";
 import * as Tone from "tone";
 
-import { MetronomeContext } from "../context/MetronomeContext";
+import { AudioContext } from "../context/AudioContext";
 import { BUFFER_MESSAGE_ERROR } from "../constants";
 
 const useAudioPlayer = () => {
+  const { currentAudio, setIsPlaying } = useContext(AudioContext);
   const {
-    playerBuffer,
-    setPlayerBuffer,
-    songName,
-    audioPan,
-    setAudioPan,
+    title,
+    tempo,
     beatPan,
-    setBeatPan,
-    audioVolume,
-    setAudioVolume,
+    timeSignature,
+    audioPan,
+    audioBuffer,
     beatVolume,
-    setBeatVolume,
-    setIsPlaying,
-  } = useContext(MetronomeContext);
+    audioVolume,
+  } = currentAudio || {};
 
   const synthRef = useRef(null);
   const loopRef = useRef(null);
@@ -32,28 +29,22 @@ const useAudioPlayer = () => {
   }, []);
 
   useEffect(() => {
+    if (!currentAudio) return;
+    synthRef.current.volume.value = beatVolume;
+    playerRef.current.volume.value = audioVolume;
     updatePannerValue(beatPannerRef.current, beatPan);
-  }, [beatPan]);
-
-  useEffect(() => {
     updatePannerValue(audioPannerRef.current, audioPan);
-  }, [audioPan]);
+  }, [currentAudio]);
 
-  useEffect(() => {
-    if (synthRef.current) {
-      synthRef.current.volume.value = beatVolume;
+  const updatePannerValue = (panner, value) => {
+    if (panner) {
+      panner.pan.value = value;
     }
-  }, [beatVolume]);
-
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.volume.value = audioVolume;
-    }
-  }, [audioVolume]);
+  };
 
   const initToneResources = () => {
-    beatPannerRef.current = new Tone.Panner(beatPan).toDestination();
-    audioPannerRef.current = new Tone.Panner(audioPan).toDestination();
+    beatPannerRef.current = new Tone.Panner(-1).toDestination();
+    audioPannerRef.current = new Tone.Panner(1).toDestination();
 
     const newSynth = new Tone.Synth({
       oscillator: { type: "sine" }, //sine - square
@@ -76,15 +67,9 @@ const useAudioPlayer = () => {
     if (loopRef.current) loopRef.current.dispose();
   };
 
-  const updatePannerValue = (panner, value) => {
-    if (panner) {
-      panner.pan.value = value;
-    }
-  };
-
-  const updateLoop = (tempo, timeSignature) => {
+  const updateLoop = () => {
     if (!tempo || !timeSignature || !synthRef.current) return;
-    Tone.Transport.bpm.value = tempo;
+    Tone.Transport.bpm.value = Number(tempo);
 
     const [beats, subdivision] = timeSignature.split("/").map(Number);
     if (loopRef.current) loopRef.current.dispose();
@@ -103,6 +88,7 @@ const useAudioPlayer = () => {
       },
       subdivision === 8 ? "8t" : "4n"
     ).start(0);
+    console.log({ timeSignature }, "timeSignature8787-----", newLoop);
     loopRef.current = newLoop;
   };
 
@@ -112,22 +98,23 @@ const useAudioPlayer = () => {
   };
 
   const startPlayback = async () => {
-    if (playerBuffer) {
+    if (audioBuffer) {
+      updateLoop();
+      setIsPlaying(true);
       activateAudioInBrowsers();
-      playerRef.current.buffer.set(playerBuffer.buffer);
+      playerRef.current.buffer.set(audioBuffer.buffer);
       if (!speechSynthesis.current) {
         speechSynthesis.current = new SpeechSynthesisUtterance();
         speechSynthesis.current.lang = "es-ES";
-        speechSynthesis.current.text = songName;
+        speechSynthesis.current.text = title;
       }
       window.speechSynthesis.speak(speechSynthesis.current);
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
+      Tone.Transport.start();
       playerRef.current
         .sync()
-        .start(Tone.Time("2:0"), playerBuffer.silenceDuration);
-      Tone.Transport.start();
-      setIsPlaying(true);
+        .start(Tone.Time("2:0"), audioBuffer.silenceDuration);
     } else {
       alert(BUFFER_MESSAGE_ERROR);
     }
@@ -138,55 +125,9 @@ const useAudioPlayer = () => {
     playerRef.current.stop().unsync();
   };
 
-  const getSilenceDuration = (audioBuffer, threshold = 0.01) => {
-    const numberOfChannels = audioBuffer.numberOfChannels;
-    let startOffset = 0;
-
-    outerLoop: for (let i = 0; i < audioBuffer.length; i++) {
-      for (let channel = 0; channel < numberOfChannels; channel++) {
-        if (Math.abs(audioBuffer.getChannelData(channel)[i]) > threshold) {
-          startOffset = i;
-          break outerLoop;
-        }
-      }
-    }
-
-    const silenceDuration = startOffset / audioBuffer.sampleRate;
-    return silenceDuration;
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = async (fileEvent) => {
-      const arrayBuffer = await fileEvent.target.result;
-      Tone.context.decodeAudioData(arrayBuffer).then((audioBuffer) => {
-        // Calculate the duration of silence at the beginning of the audio
-        const silenceDuration = getSilenceDuration(audioBuffer);
-
-        setPlayerBuffer({
-          buffer: audioBuffer,
-          silenceDuration: silenceDuration,
-        });
-      });
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
   return {
     startPlayback,
     stopPlayback,
-    updateLoop,
-    beatVolume,
-    setBeatVolume,
-    audioVolume,
-    setAudioVolume,
-    beatPan,
-    setBeatPan,
-    audioPan,
-    setAudioPan,
-    playerRef,
-    handleFileChange,
   };
 };
 

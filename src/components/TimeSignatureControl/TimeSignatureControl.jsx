@@ -1,5 +1,9 @@
-export const TimeSignatureControl = ({ timeSignature, setTimeSignature }) => (
-  <select value={timeSignature}  onChange={(e) => setTimeSignature(e.target.value)}>
+export const TimeSignatureControl = ({
+  name,
+  timeSignature,
+  setTimeSignature,
+}) => (
+  <select name={name} defaultValue={timeSignature} onChange={setTimeSignature}>
     <option value="1/4">1/4</option>
     <option value="2/4">2/4</option>
     <option value="3/4">3/4</option>
