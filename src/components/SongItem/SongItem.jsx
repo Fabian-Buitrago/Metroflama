@@ -8,7 +8,6 @@ import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
 
 import { TempoControl } from "../TempoControl";
 import { TimeSignatureControl } from "../TimeSignatureControl";
@@ -121,7 +120,9 @@ const SongItem = ({ song, index }) => {
           </Grid>
 
           <Grid item xs={12}>
-            Audio
+            <Typography variant="subtitle1" component="h2">
+              Audio
+            </Typography>
           </Grid>
           <Grid item xs={6}>
             <FileInput name="audioBuffer" handleFileChange={updateSong} />

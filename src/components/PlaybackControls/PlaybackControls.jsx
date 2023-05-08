@@ -43,6 +43,7 @@ export function PlaybackControls() {
             variant="subtitle1"
             color="text.secondary"
             component="div"
+            sx={{ width: "5rem" }}
           >
             {tempo} BPM
           </Typography>
@@ -61,6 +62,7 @@ export function PlaybackControls() {
             variant="subtitle1"
             color="text.secondary"
             component="div"
+            sx={{ width: "5rem" }}
           >
             {timeSignature}
           </Typography>
