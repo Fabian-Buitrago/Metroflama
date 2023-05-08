@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -7,6 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 import { TempoControl } from "../TempoControl";
 import { TimeSignatureControl } from "../TimeSignatureControl";
@@ -73,69 +74,98 @@ const SongItem = ({ song, index }) => {
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <TextField
-          name="title"
-          label="Song Name"
-          variant="outlined"
-          onChange={updateSong}
-          autoFocus
-          defaultValue={title}
-        />
+        <Grid container spacing={2} sx={{ padding: 5 }}>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" component="h2">
+              Beat
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              name="title"
+              label="Song Name"
+              variant="outlined"
+              onChange={updateSong}
+              autoFocus
+              defaultValue={title}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TempoControl name="tempo" tempo={tempo} setTempo={updateSong} />
+          </Grid>
+          <Grid item xs={6}>
+            <PanControl
+              name="beatPan"
+              pan={beatPan}
+              handleChange={updateSong}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TimeSignatureControl
+              name="timeSignature"
+              timeSignature={timeSignature}
+              setTimeSignature={updateSong}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <VolumeControl
+              name="beatVolume"
+              label="Beat"
+              volume={beatVolume}
+              handleChange={updateSong}
+            />
+          </Grid>
 
-        {/* Beat */}
-        <VolumeControl
-          name="beatVolume"
-          label="Beat"
-          volume={beatVolume}
-          handleChange={updateSong}
-        />
-        <TempoControl name="tempo" tempo={tempo} setTempo={updateSong} />
-        <TimeSignatureControl
-          name="timeSignature"
-          timeSignature={timeSignature}
-          setTimeSignature={updateSong}
-        />
-        <PanControl
-          name="beatPan"
-          label="Beat"
-          pan={beatPan}
-          handleChange={updateSong}
-        />
+          <Grid item xs={12}>
+            Audio
+          </Grid>
+          <Grid item xs={6}>
+            <FileInput name="audioBuffer" handleFileChange={updateSong} />
+          </Grid>
+          <Grid item xs={6}>
+            <PanControl
+              name="audioPan"
+              pan={audioPan}
+              handleChange={updateSong}
+            />
+          </Grid>
 
-        {/* Audio */}
-        <VolumeControl
-          name="audioVolume"
-          label="Audio"
-          volume={audioVolume}
-          handleChange={updateSong}
-        />
-        <PanControl
-          name="audioPan"
-          label="Audio"
-          pan={audioPan}
-          handleChange={updateSong}
-        />
-        <FileInput name="audioBuffer" handleFileChange={updateSong} />
+          <Grid item xs={6}>
+            Activate
+          </Grid>
+          <Grid item xs={6}>
+            <VolumeControl
+              name="audioVolume"
+              label="Audio"
+              volume={audioVolume}
+              handleChange={updateSong}
+            />
+          </Grid>
 
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setExpanded(!expanded);
-            updateSongs();
-          }}
-        >
-          Update
-        </Button>
-
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setExpanded(!expanded);
-            deleteSong();
-          }}
-        >
-          Delete
-        </Button>
+          <Grid item xs={6}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setExpanded(!expanded);
+                updateSongs();
+              }}
+            >
+              Update
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setExpanded(!expanded);
+                deleteSong();
+              }}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
       </AccordionDetails>
     </Accordion>
   );

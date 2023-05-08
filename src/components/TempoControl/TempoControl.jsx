@@ -1,13 +1,17 @@
+import TextField from "@mui/material/TextField";
 export const TempoControl = ({ name, tempo, setTempo }) => (
-  <>
-    <label htmlFor="tempo">Tempo:</label>
-    <input
-      name={name}
-      type="number"
-      min="1"
-      max="300"
-      defaultValue={tempo}
-      onChange={setTempo}
-    />
-  </>
+  <TextField
+    name={name}
+    type="number"
+    InputProps={{
+      inputProps: {
+        max: 100,
+        min: 10,
+      },
+    }}
+    label="Tempo"
+    size="small"
+    defaultValue={tempo}
+    onChange={setTempo}
+  />
 );

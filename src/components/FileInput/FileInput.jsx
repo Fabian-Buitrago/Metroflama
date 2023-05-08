@@ -1,3 +1,4 @@
+import TextField from "@mui/material/TextField";
 import * as Tone from "tone";
 
 export const FileInput = ({ name, handleFileChange }) => {
@@ -37,6 +38,18 @@ export const FileInput = ({ name, handleFileChange }) => {
   };
 
   return (
-    <input name={name} type="file" accept="audio/*" onChange={loadFileChange} />
+    <TextField
+      name={name}
+      variant="outlined"
+      label="Choose a file"
+      type="file"
+      onChange={loadFileChange}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      inputProps={{
+        accept: "audio/*",
+      }}
+    />
   );
 };

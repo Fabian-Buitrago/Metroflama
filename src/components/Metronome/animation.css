@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items:center;
+    height:100vh;
+    padding:0;
+    margin:0;
+    background: #21034f;
+  }
+  svg {
+    width:300px;
+    margin-top:60px;
+  }
+  circle {
+    fill: #ffba49;
+    animation: flame 2s ease-out infinite;
+  }
+  #ci2 {
+    animation-delay: -.5s;
+  }
+  #ci3 { 
+    animation-delay: -1s;
+  }
+  #ci4 {
+    animation-delay: -1.5s;
+  }
+  
+  @keyframes flame {
+    from {
+      r:1px;
+      opacity:.8;
+    }
+    to {
+      r:28px;
+      opacity:0;
+    }
+  }
+  
