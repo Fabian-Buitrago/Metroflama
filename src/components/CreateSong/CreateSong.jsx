@@ -23,6 +23,7 @@ export const CreateSong = ({ onClose }) => {
         tempo: 120,
         beatPan: -1,
         beatVolume: 0,
+        soundStatus: "on",
       };
       onClose();
       setAudioData([...audioData, audioInput]);

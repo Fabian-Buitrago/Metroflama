@@ -8,6 +8,7 @@ import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Switch from "@mui/material/Switch";
 
 import { TempoControl } from "../TempoControl";
 import { TimeSignatureControl } from "../TimeSignatureControl";
@@ -15,6 +16,7 @@ import { PanControl } from "../PanControl";
 import { VolumeControl } from "../VolumeControl";
 import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
+import { SoundControl } from "../SoundControl";
 import useMetronome from "../../hooks/useMetronome";
 
 const SongItem = ({ song, index }) => {
@@ -32,6 +34,7 @@ const SongItem = ({ song, index }) => {
     timeSignature,
     audioVolume,
     audioPan,
+    soundStatus,
   } = songInfo;
 
   const updateSong = (e, fileValue) => {
@@ -130,9 +133,12 @@ const SongItem = ({ song, index }) => {
               handleChange={updateSong}
             />
           </Grid>
-
           <Grid item xs={6}>
-            Activate
+            <SoundControl
+              name="soundStatus"
+              soundStatus={soundStatus}
+              handleChange={updateSong}
+            />
           </Grid>
           <Grid item xs={6}>
             <VolumeControl

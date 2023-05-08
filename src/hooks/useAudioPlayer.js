@@ -88,7 +88,6 @@ const useAudioPlayer = () => {
       },
       subdivision === 8 ? "8t" : "4n"
     ).start(0);
-    console.log({ timeSignature }, "timeSignature8787-----", newLoop);
     loopRef.current = newLoop;
   };
 
