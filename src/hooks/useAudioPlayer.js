@@ -3,8 +3,10 @@ import * as Tone from "tone";
 
 import { AudioContext } from "../context/AudioContext";
 import { BUFFER_MESSAGE_ERROR } from "../constants";
+import { SnackbarContext } from "../context/SnackbarContext";
 
 const useAudioPlayer = () => {
+  const { showSnackbar } = useContext(SnackbarContext);
   const { currentAudio, setIsPlaying } = useContext(AudioContext);
   const {
     title,
@@ -115,7 +117,7 @@ const useAudioPlayer = () => {
         .sync()
         .start(Tone.Time("2:0"), audioBuffer.silenceDuration);
     } else {
-      alert(BUFFER_MESSAGE_ERROR);
+      showSnackbar(BUFFER_MESSAGE_ERROR);
     }
   };
 
