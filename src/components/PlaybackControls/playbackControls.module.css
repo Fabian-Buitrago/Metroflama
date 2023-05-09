@@ -1,0 +1,44 @@
+.playContainer {
+  position: relative;
+}
+
+.pauseIcon {
+  position: relative;
+  z-index: 2;
+}
+
+.svgImage {
+  position: absolute;
+  top: -2rem;
+  left: 13rem;
+  z-index: 1;
+  transform: scale(70);
+}
+
+.svgImage circle {
+  fill: #ffba49;
+  animation: flame 2s ease-out infinite;
+}
+
+.svgImage #ci2 {
+  animation-delay: -0.5s;
+}
+
+.svgImage #ci3 {
+  animation-delay: -1s;
+}
+
+.svgImage #ci4 {
+  animation-delay: -1.5s;
+}
+
+@keyframes flame {
+  from {
+    r: 1px;
+    opacity: 0.8;
+  }
+  to {
+    r: 28px;
+    opacity: 0;
+  }
+}

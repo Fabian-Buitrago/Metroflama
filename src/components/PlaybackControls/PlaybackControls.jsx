@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,8 +6,28 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
+import SvgIcon from "@mui/material/SvgIcon";
+
 import useMetronome from "../../hooks/useMetronome";
 import { AudioContext } from "../../context/AudioContext";
+import styles from "./playbackControls.module.css";
+
+const PlayAnimation = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg
+        viewBox="0 0 120 120"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle id="ci1" cx="46.58" cy="66.56" r="1" />
+        <circle id="ci2" cx="46.58" cy="66.56" r="1" />
+        <circle id="ci3" cx="46.58" cy="66.56" r="1" />
+        <circle id="ci4" cx="46.58" cy="66.56" r="1" />
+      </svg>
+    </SvgIcon>
+  );
+};
 
 export function PlaybackControls() {
   const { handleClick, isPlaying } = useMetronome();
@@ -53,9 +72,18 @@ export function PlaybackControls() {
             sx={{ margin: "0 50px", color: "#ff7b40" }}
           >
             {isPlaying ? (
-              <StopIcon sx={{ height: 60, width: 60 }} />
+              <div className={styles.playContainer}>
+                <StopIcon
+                  className={styles.pauseIcon}
+                  sx={{ height: 60, width: 60 }}
+                />
+                <PlayAnimation className={styles.svgImage} />
+              </div>
             ) : (
-              <PlayArrowIcon sx={{ height: 60, width: 60 }} />
+              <PlayArrowIcon
+                className={styles.playIcon}
+                sx={{ height: 60, width: 60 }}
+              />
             )}
           </IconButton>
           <Typography
