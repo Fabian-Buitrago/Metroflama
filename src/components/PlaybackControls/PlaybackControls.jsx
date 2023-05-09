@@ -27,7 +27,7 @@ export function PlaybackControls() {
           borderRadius: "0 0 30% 30%",
         }}
       >
-        <CardContent sx={{ paddingBottom: 0 }}>
+        <CardContent sx={{ paddingBottom: 0, textTransform: "capitalize" }}>
           <Typography component="div" variant="h5">
             {title}
           </Typography>
