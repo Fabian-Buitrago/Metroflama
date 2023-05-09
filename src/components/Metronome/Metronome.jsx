@@ -36,7 +36,9 @@ const Metronome = () => {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <Nav>🔥Metroflama</Nav>
+        <Nav>
+          <span className={styles.flame}>🔥</span> Metroflama
+        </Nav>
         <Divider />
         <PlaybackControls />
         <div className={styles.songContainer}>

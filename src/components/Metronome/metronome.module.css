@@ -21,6 +21,18 @@
   padding: 2rem;
 }
 
+.flame {
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.flame:hover {
+  cursor: pointer;
+  font-size: 1.25rem;
+  animation: flame-flicker 500ms infinite alternate,
+    flame-move 1s infinite ease-in-out;
+}
+
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
@@ -30,5 +42,25 @@
 @media (min-width: 768px) {
   .container {
     max-width: 768px;
+  }
+}
+
+@keyframes flame-flicker {
+  0%,
+  100% {
+    filter: brightness(100%);
+  }
+  50% {
+    filter: brightness(80%);
+  }
+}
+
+@keyframes flame-move {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1deg);
   }
 }

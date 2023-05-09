@@ -1,10 +1,10 @@
 import { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { v4 as uuid } from "uuid";
 
 import styles from "./createSong.module.css";
 import { AudioContext } from "../../context/AudioContext";
+import { playNotificationSound } from "../../utils/notificationSound";
 
 export const CreateSong = ({ onClose }) => {
   const [title, setTitle] = useState("");
@@ -27,6 +27,7 @@ export const CreateSong = ({ onClose }) => {
       };
       onClose();
       setAudioData([...audioData, audioInput]);
+      playNotificationSound();
     }
   };
 
