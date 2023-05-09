@@ -78,7 +78,11 @@ const SongItem = ({ song, index }) => {
       <AccordionDetails>
         <Grid container spacing={2} sx={{ padding: 5 }}>
           <Grid item xs={12}>
-            <Typography variant="subtitle1" component="h2">
+            <Typography
+              variant="subtitle1"
+              component="h2"
+              sx={{ fontWeight: 500 }}
+            >
               Beat
             </Typography>
           </Grid>
@@ -120,7 +124,11 @@ const SongItem = ({ song, index }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="subtitle1" component="h2">
+            <Typography
+              variant="subtitle1"
+              component="h2"
+              sx={{ fontWeight: 500 }}
+            >
               Audio
             </Typography>
           </Grid>
@@ -150,7 +158,11 @@ const SongItem = ({ song, index }) => {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", gap: 2, justifyContent: "center" }}
+          >
             <Button
               variant="outlined"
               onClick={() => {
@@ -160,8 +172,6 @@ const SongItem = ({ song, index }) => {
             >
               Update
             </Button>
-          </Grid>
-          <Grid item xs={6}>
             <Button
               variant="outlined"
               onClick={() => {
