@@ -11,6 +11,7 @@ import SongItem from "../SongItem/SongItem";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import { AudioContext } from "../../context/AudioContext";
+import { DeleteConfirmDialog } from "../DeleteConfirmDialog";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -60,6 +61,7 @@ const Metronome = () => {
       <Drawer anchor={"bottom"} open={drawer} onClose={() => setDrawer(false)}>
         <CreateSong onClose={() => setDrawer(false)}></CreateSong>
       </Drawer>
+      <DeleteConfirmDialog />
     </div>
   );
 };

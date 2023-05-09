@@ -17,11 +17,13 @@ import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
 import { SoundControl } from "../SoundControl";
 import useMetronome from "../../hooks/useMetronome";
+import { useDialog } from "../../context/DialogContext";
 
 const SongItem = ({ song, index }) => {
   const { audioData, setAudioData, setCurrentAudio } = useContext(AudioContext);
   const [songInfo, setSongInfo] = useState(song);
   const [expanded, setExpanded] = useState(false);
+  const { openDialog } = useDialog();
 
   const { handleClick } = useMetronome();
 
@@ -45,6 +47,17 @@ const SongItem = ({ song, index }) => {
     const newAudioData = [...audioData];
     newAudioData.splice(index, 1);
     setAudioData(newAudioData);
+  };
+
+  const handleDelete = () => {
+    const dispatchAction = () => {
+      deleteSong();
+    };
+
+    openDialog({
+      title: `¿Estás seguro de que deseas eliminar "${title}"?`,
+      dispatchAction,
+    });
   };
 
   const updateSongs = () => {
@@ -172,13 +185,7 @@ const SongItem = ({ song, index }) => {
             >
               Update
             </Button>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setExpanded(!expanded);
-                deleteSong();
-              }}
-            >
+            <Button variant="outlined" onClick={handleDelete}>
               Delete
             </Button>
           </Grid>
