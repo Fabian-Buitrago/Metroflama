@@ -16,18 +16,17 @@ import { VolumeControl } from "../VolumeControl";
 import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
 import { SoundControl } from "../SoundControl";
-import useMetronome from "../../hooks/useMetronome";
 import { useDialog } from "../../context/DialogContext";
 
 const SongItem = ({ song, index }) => {
-  const { audioData, setAudioData, setCurrentAudio } = useContext(AudioContext);
+  const { audioData, setAudioData, currentAudio, setCurrentAudio, isPlaying } =
+    useContext(AudioContext);
   const [songInfo, setSongInfo] = useState(song);
   const [expanded, setExpanded] = useState(false);
   const { openDialog } = useDialog();
 
-  const { handleClick } = useMetronome();
-
   const {
+    id,
     title,
     tempo,
     beatVolume,
@@ -60,6 +59,10 @@ const SongItem = ({ song, index }) => {
     });
   };
 
+  const isActive = () => {
+    return id === currentAudio?.id && isPlaying;
+  };
+
   const updateSongs = () => {
     const updatedObj = { ...audioData[index], songInfo };
     const updatedData = [...audioData];
@@ -70,10 +73,6 @@ const SongItem = ({ song, index }) => {
   return (
     <Accordion expanded={expanded}>
       <AccordionSummary
-        onClick={() => {
-          handleClick();
-          setCurrentAudio(songInfo);
-        }}
         expandIcon={
           <ExpandMoreIcon
             onClick={(e) => {
@@ -83,7 +82,13 @@ const SongItem = ({ song, index }) => {
           />
         }
       >
-        <AudiotrackIcon sx={{ marginRight: 2 }} />
+        <AudiotrackIcon
+          onClick={() => {
+            setCurrentAudio({ ...songInfo });
+          }}
+          sx={{ marginRight: 2 }}
+          style={{ color: isActive() ? "red" : "" }}
+        />
         <Typography sx={{ marginRight: 2, textTransform: "capitalize" }}>
           {title}
         </Typography>

@@ -30,7 +30,7 @@ const PlayAnimation = (props) => {
 };
 
 export function PlaybackControls() {
-  const { handleClick, isPlaying } = useMetronome();
+  const { handleControl, isPlaying } = useMetronome();
   const { currentAudio } = useContext(AudioContext);
   const { title, tempo, timeSignature } = currentAudio || {};
 
@@ -68,7 +68,7 @@ export function PlaybackControls() {
           </Typography>
           <IconButton
             aria-label="play/pause"
-            onClick={handleClick}
+            onClick={handleControl}
             sx={{ margin: "0 50px", color: "#ff7b40" }}
           >
             {isPlaying ? (
