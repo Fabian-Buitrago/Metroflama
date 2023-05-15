@@ -82,7 +82,7 @@ export function PlaybackControls() {
               <div className={styles.playContainer}>
                 <PauseIcon
                   className={styles.pauseIcon}
-                  sx={{ height: 60, width: 60 }}
+                  sx={{ height: 54, width: 54 }}
                 />
                 <PlayAnimation className={styles.svgImage} />
               </div>

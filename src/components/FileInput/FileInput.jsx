@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import TextField from "@mui/material/TextField";
+import { LoadingContext } from "../../context/LoadingContext/LoadingContext";
 import * as Tone from "tone";
 
 export const FileInput = ({ name, handleFileChange }) => {
+  const { toggleLoading } = useContext(LoadingContext);
   const getSilenceDuration = (audioBuffer, threshold = 0.01) => {
     const numberOfChannels = audioBuffer.numberOfChannels;
     let startOffset = 0;
@@ -20,8 +23,13 @@ export const FileInput = ({ name, handleFileChange }) => {
   };
 
   const loadFileChange = async (e) => {
+    toggleLoading();
     const { name, files } = e.target;
     const file = files[0];
+    if (!file) {
+      toggleLoading();
+      return;
+    }
     const reader = new FileReader();
     reader.onload = async (fileEvent) => {
       const arrayBuffer = await fileEvent.target.result;
@@ -38,6 +46,7 @@ export const FileInput = ({ name, handleFileChange }) => {
             },
           },
         });
+        toggleLoading();
       });
     };
     reader.readAsArrayBuffer(file);

@@ -15,7 +15,6 @@ import { DeleteConfirmDialog } from "../DeleteConfirmDialog";
 
 const StyledFab = styled(Fab)({
   margin: "2rem auto",
-  backgroundColor: "#ff7b40",
 });
 
 const Nav = styled(Card)({
@@ -32,9 +31,7 @@ const Metronome = () => {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <Nav>
-          <span className={styles.flame}>🔥</span> Metroflama
-        </Nav>
+        <Nav>🔥 Metroflama</Nav>
         <Divider />
         <PlaybackControls />
         {!drawer && (
