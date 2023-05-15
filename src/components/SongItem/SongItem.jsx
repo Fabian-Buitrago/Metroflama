@@ -90,7 +90,7 @@ const SongItem = ({ song, index, handleFocus }) => {
   const updateSongs = () => {
     isPlaying && setCurrentAudio(null);
     handleFocus();
-    const updatedObj = { ...audioData[index], songInfo };
+    const updatedObj = { ...songInfo };
     const updatedData = [...audioData];
     updatedData[index] = updatedObj;
     setAudioData(updatedData);
@@ -205,7 +205,7 @@ const SongItem = ({ song, index, handleFocus }) => {
             sx={{ display: "flex", gap: 2, justifyContent: "center" }}
           >
             <Button
-              variant="outlined"
+              variant="contained"
               onClick={() => {
                 setExpanded(!expanded);
                 updateSongs();

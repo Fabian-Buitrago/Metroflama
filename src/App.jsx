@@ -1,12 +1,14 @@
-import Metronome from "./components/Metronome/Metronome";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 import { AudioProvider } from "./context/AudioContext";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import { DialogProvider } from "./context/DialogContext";
 import { LoadingProvider } from "./context/LoadingContext/LoadingContext";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Metronome from "./components/Metronome/Metronome";
 
 const theme = createTheme({
   palette: {
+    type: "light",
     primary: {
       light: "#ff9566",
       main: "#ff7b40",
@@ -14,10 +16,10 @@ const theme = createTheme({
       contrastText: "#fff",
     },
     secondary: {
-      light: '#ffc76d',
-      main: '#ffba49',
-      dark: '#b28233',
-      contrastText: '#000',
+      light: "#ffc76d",
+      main: "#ffba49",
+      dark: "#b28233",
+      contrastText: "#000",
     },
   },
 });

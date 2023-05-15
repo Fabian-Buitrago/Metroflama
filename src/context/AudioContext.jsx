@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext } from "react";
+import { isEmpty } from "lodash";
 
 export const AudioContext = createContext(null);
 
@@ -15,8 +16,9 @@ export const AudioProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    // if (isEmpty(audioData)) return; 
     localStorage.setItem("audioData", JSON.stringify(audioData));
-  }, [audioData, currentAudio]);
+  }, [audioData]);
 
   return (
     <AudioContext.Provider
