@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import useAudioPlayer from "./useAudioPlayerTest";
+import useAudioPlayer from "./useAudioPlayer";
 import { AudioContext } from "../context/AudioContext";
 
 const useMetronome = () => {

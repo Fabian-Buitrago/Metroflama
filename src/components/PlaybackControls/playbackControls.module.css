@@ -10,7 +10,7 @@
 .svgImage {
   position: absolute;
   top: -2rem;
-  left: 13rem;
+  left: 12.9rem;
   z-index: 1;
   transform: scale(70);
 }

@@ -1,0 +1,8 @@
+.audiotrack {
+  margin-right: 1rem;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.active {
+  color: #ff7b40;
+}

@@ -14,12 +14,7 @@ import { AudioContext } from "../../context/AudioContext";
 import { DeleteConfirmDialog } from "../DeleteConfirmDialog";
 
 const StyledFab = styled(Fab)({
-  position: "absolute",
-  zIndex: 1,
-  bottom: 30,
-  left: 0,
-  right: 0,
-  margin: "0 auto",
+  margin: "2rem auto",
   backgroundColor: "#ff7b40",
 });
 
@@ -42,22 +37,22 @@ const Metronome = () => {
         </Nav>
         <Divider />
         <PlaybackControls />
+        {!drawer && (
+          <StyledFab
+            size="small"
+            color="primary"
+            aria-label="add"
+            onClick={() => setDrawer(true)}
+          >
+            <AddIcon />
+          </StyledFab>
+        )}
         <div className={styles.songContainer}>
           {audioData.map((song, index) => (
             <SongItem key={song.id} song={song} index={index} />
           ))}
         </div>
       </div>
-      {!drawer && (
-        <StyledFab
-          size="small"
-          color="primary"
-          aria-label="add"
-          onClick={() => setDrawer(true)}
-        >
-          <AddIcon />
-        </StyledFab>
-      )}
       <Drawer anchor={"bottom"} open={drawer} onClose={() => setDrawer(false)}>
         <CreateSong onClose={() => setDrawer(false)}></CreateSong>
       </Drawer>

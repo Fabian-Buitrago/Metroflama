@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import StopIcon from "@mui/icons-material/Stop";
+import PauseIcon from '@mui/icons-material/Pause';
 import SvgIcon from "@mui/material/SvgIcon";
 
 import useMetronome from "../../hooks/useMetronome";
@@ -34,8 +34,15 @@ export function PlaybackControls() {
   const { currentAudio } = useContext(AudioContext);
   const { title, tempo, timeSignature } = currentAudio || {};
 
+  const isValidToShow = () => {
+    return (
+      (currentAudio && currentAudio?.audioBuffer) ||
+      (currentAudio && currentAudio?.soundStatus === "on")
+    );
+  };
+
   return (
-    currentAudio && (
+    isValidToShow() && (
       <Card
         sx={{
           display: "flex",
@@ -73,7 +80,7 @@ export function PlaybackControls() {
           >
             {isPlaying ? (
               <div className={styles.playContainer}>
-                <StopIcon
+                <PauseIcon
                   className={styles.pauseIcon}
                   sx={{ height: 60, width: 60 }}
                 />

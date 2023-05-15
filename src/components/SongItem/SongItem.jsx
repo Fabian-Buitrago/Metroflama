@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -8,6 +8,7 @@ import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { debounce } from "lodash";
 
 import { TempoControl } from "../TempoControl";
 import { TimeSignatureControl } from "../TimeSignatureControl";
@@ -17,6 +18,7 @@ import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
 import { SoundControl } from "../SoundControl";
 import { useDialog } from "../../context/DialogContext";
+import styles from "./songItem.module.css";
 
 const SongItem = ({ song, index }) => {
   const { audioData, setAudioData, currentAudio, setCurrentAudio, isPlaying } =
@@ -37,9 +39,19 @@ const SongItem = ({ song, index }) => {
     soundStatus,
   } = songInfo;
 
-  const updateSong = (e, fileValue) => {
+  const debouncedOnClick = debounce(() => {
+    setCurrentAudio({ ...songInfo });
+  }, 300);
+
+  useEffect(() => {
+    return () => {
+      debouncedOnClick.cancel();
+    };
+  }, [debouncedOnClick]);
+
+  const updateSong = (e) => {
     const { name, value } = e.target;
-    setSongInfo({ ...songInfo, [name]: fileValue ? fileValue : value });
+    setSongInfo({ ...songInfo, [name]: value });
   };
 
   const deleteSong = () => {
@@ -83,11 +95,8 @@ const SongItem = ({ song, index }) => {
         }
       >
         <AudiotrackIcon
-          onClick={() => {
-            setCurrentAudio({ ...songInfo });
-          }}
-          sx={{ marginRight: 2 }}
-          style={{ color: isActive() ? "red" : "" }}
+          onClick={debouncedOnClick}
+          className={`${styles.audiotrack} ${isActive() ? styles.active : ""}`}
         />
         <Typography sx={{ marginRight: 2, textTransform: "capitalize" }}>
           {title}

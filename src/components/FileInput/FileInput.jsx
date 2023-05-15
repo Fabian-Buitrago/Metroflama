@@ -20,7 +20,8 @@ export const FileInput = ({ name, handleFileChange }) => {
   };
 
   const loadFileChange = async (e) => {
-    const file = e.target.files[0];
+    const { name, files } = e.target;
+    const file = files[0];
     const reader = new FileReader();
     reader.onload = async (fileEvent) => {
       const arrayBuffer = await fileEvent.target.result;
@@ -28,9 +29,14 @@ export const FileInput = ({ name, handleFileChange }) => {
         // Calculate the duration of silence at the beginning of the audio
         const silenceDuration = getSilenceDuration(audioBuffer);
 
-        handleFileChange(e, {
-          buffer: audioBuffer,
-          silenceDuration: silenceDuration,
+        handleFileChange({
+          target: {
+            name,
+            value: {
+              buffer: audioBuffer,
+              silenceDuration: silenceDuration,
+            },
+          },
         });
       });
     };

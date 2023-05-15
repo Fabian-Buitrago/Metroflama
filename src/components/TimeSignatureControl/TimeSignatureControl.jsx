@@ -7,7 +7,7 @@ export const TimeSignatureControl = ({
 }) => (
   <Select
     name={name}
-    defaultValue={timeSignature}
+    value={timeSignature}
     onChange={setTimeSignature}
     size="small"
   >

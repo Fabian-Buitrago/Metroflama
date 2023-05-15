@@ -1,6 +1,7 @@
 import TextField from "@mui/material/TextField";
 export const TempoControl = ({ name, tempo, setTempo }) => (
   <TextField
+    required
     name={name}
     type="number"
     InputProps={{

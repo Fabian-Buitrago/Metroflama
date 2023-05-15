@@ -53,7 +53,10 @@ export const PanControl = ({ name, pan, handleChange }) => (
     <AntSwitch
       inputProps={{ "aria-label": "ant design" }}
       checked={pan > 0 ? true : false}
-      onChange={handleChange}
+      onChange={(e, checked) => {
+        e.target.value = checked ? 1 : -1;
+        handleChange(e);
+      }}
       name={name}
     />
     <Typography>R</Typography>
