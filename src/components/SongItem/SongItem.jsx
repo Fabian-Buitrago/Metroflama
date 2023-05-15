@@ -18,14 +18,17 @@ import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
 import { SoundControl } from "../SoundControl";
 import { useDialog } from "../../context/DialogContext";
+import { BUFFER_MESSAGE_ERROR } from "../../constants";
+import { SnackbarContext } from "../../context/SnackbarContext";
 import styles from "./songItem.module.css";
 
-const SongItem = ({ song, index }) => {
+const SongItem = ({ song, index, handleFocus }) => {
   const { audioData, setAudioData, currentAudio, setCurrentAudio, isPlaying } =
     useContext(AudioContext);
   const [songInfo, setSongInfo] = useState(song);
   const [expanded, setExpanded] = useState(false);
   const { openDialog } = useDialog();
+  const { showSnackbar } = useContext(SnackbarContext);
 
   const {
     id,
@@ -37,10 +40,19 @@ const SongItem = ({ song, index }) => {
     audioVolume,
     audioPan,
     soundStatus,
+    audioBuffer,
   } = songInfo;
 
+  const isValidToPlay = () => {
+    return audioBuffer || soundStatus === "off";
+  };
+
   const debouncedOnClick = debounce(() => {
-    setCurrentAudio({ ...songInfo });
+    if (isValidToPlay()) {
+      setCurrentAudio({ ...songInfo });
+    } else {
+      showSnackbar(BUFFER_MESSAGE_ERROR);
+    }
   }, 300);
 
   useEffect(() => {
@@ -76,6 +88,8 @@ const SongItem = ({ song, index }) => {
   };
 
   const updateSongs = () => {
+    isPlaying && setCurrentAudio(null);
+    handleFocus();
     const updatedObj = { ...audioData[index], songInfo };
     const updatedData = [...audioData];
     updatedData[index] = updatedObj;

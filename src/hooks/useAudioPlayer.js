@@ -2,11 +2,8 @@ import { useRef, useContext, useEffect } from "react";
 import * as Tone from "tone";
 
 import { AudioContext } from "../context/AudioContext";
-import { BUFFER_MESSAGE_ERROR } from "../constants";
-import { SnackbarContext } from "../context/SnackbarContext";
 
 const useAudioPlayer = () => {
-  const { showSnackbar } = useContext(SnackbarContext);
   const { setIsPlaying, currentAudio } = useContext(AudioContext);
   const {
     title,
@@ -23,6 +20,8 @@ const useAudioPlayer = () => {
   useEffect(() => {
     if (currentAudio?.title) {
       startPlayback();
+    } else {
+      cleanUpToneResources();
     }
   }, [currentAudio]);
 
@@ -66,8 +65,6 @@ const useAudioPlayer = () => {
   };
 
   const startPlayback = async () => {
-    if (soundStatus === "on" && !audioBuffer)
-      return showSnackbar(BUFFER_MESSAGE_ERROR);
     cleanUpToneResources();
     activateAudioInBrowsers();
 

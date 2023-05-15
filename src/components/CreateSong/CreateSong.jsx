@@ -11,6 +11,7 @@ export const CreateSong = ({ onClose }) => {
   const { audioData, setAudioData } = useContext(AudioContext);
 
   const handleSong = (e) => {
+    e.stopPropagation();
     if (e.key.toLowerCase() === "enter" && title) {
       const audioInput = {
         id: uuid(),
