@@ -19,7 +19,7 @@ import { FileInput } from "../FileInput";
 import { AudioContext } from "../../context/AudioContext";
 import { SoundControl } from "../SoundControl";
 import { useDialog } from "../../context/DialogContext";
-import { BUFFER_MESSAGE_ERROR } from "../../constants";
+import { BUFFER_MESSAGE_ERROR, EMPTY_MESSAGE_ERROR } from "../../constants";
 import { SnackbarContext } from "../../context/SnackbarContext";
 import styles from "./songItem.module.css";
 
@@ -88,12 +88,18 @@ const SongItem = ({ song, index, handleFocus }) => {
     return id === currentAudio?.id && isPlaying;
   };
 
+  const isValidToSave = () => {
+    return title !== "" && tempo !== "" && tempo > 0 && tempo < 380;
+  };
+
   const updateSongs = () => {
+    if (!isValidToSave()) return showSnackbar(EMPTY_MESSAGE_ERROR);
     isPlaying && setCurrentAudio(null);
     handleFocus();
     const updatedObj = { ...songInfo };
     const updatedData = [...audioData];
     updatedData[index] = updatedObj;
+    setExpanded(!expanded);
     setAudioData(updatedData);
   };
 
@@ -221,13 +227,7 @@ const SongItem = ({ song, index, handleFocus }) => {
                 xs={12}
                 sx={{ display: "flex", gap: 2, justifyContent: "center" }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setExpanded(!expanded);
-                    updateSongs();
-                  }}
-                >
+                <Button variant="contained" onClick={updateSongs}>
                   Update
                 </Button>
                 <Button variant="outlined" onClick={handleDelete}>
