@@ -6,3 +6,11 @@
 .active {
   color: #ff7b40;
 }
+
+.draggingSong {
+  background-color: #ffe1b1 !important;
+}
+
+.accordion:hover {
+  background-color: #fff3e0;
+}
