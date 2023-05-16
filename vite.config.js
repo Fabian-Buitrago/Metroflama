@@ -4,5 +4,5 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  baseUrl: "https://fabian-buitrago.github.io/metroflama/",
+  baseUrl: "https://fabian-buitrago.github.io/Metroflama/",
 });
