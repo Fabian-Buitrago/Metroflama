@@ -4,7 +4,7 @@ import { AudioContext } from "../context/AudioContext";
 
 const useMetronome = () => {
   const { isPlaying, setIsPlaying } = useContext(AudioContext);
-  const { pausePlayback, resumePlayback } = useAudioPlayer();
+  const { pausePlayback, resumePlayback, handleSeek } = useAudioPlayer();
 
   const handleControl = () => {
     if (!isPlaying) {
@@ -20,6 +20,7 @@ const useMetronome = () => {
     isPlaying,
     setIsPlaying,
     handleControl,
+    handleSeek,
   };
 };
 

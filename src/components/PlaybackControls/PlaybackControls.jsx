@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SvgIcon from "@mui/material/SvgIcon";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import useMetronome from "../../hooks/useMetronome";
 import { AudioContext } from "../../context/AudioContext";
@@ -30,9 +31,15 @@ const PlayAnimation = (props) => {
 };
 
 export function PlaybackControls() {
-  const { handleControl, isPlaying } = useMetronome();
-  const { currentAudio } = useContext(AudioContext);
-  const { title, tempo, timeSignature } = currentAudio || {};
+  const { handleControl, isPlaying, handleSeek } = useMetronome();
+  const { currentAudio, duration, position } = useContext(AudioContext);
+  const { title, tempo, timeSignature, soundStatus } = currentAudio || {};
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.round(time % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
 
   return (
     currentAudio && (
@@ -51,6 +58,21 @@ export function PlaybackControls() {
             {title}
           </Typography>
         </CardContent>
+
+        {soundStatus === "on" && (
+          <Box sx={{ width: "70%", paddingTop: 2 }}>
+            <LinearProgress
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={handleSeek}
+              variant="determinate"
+              value={(position / duration) * 100}
+            />
+            <div>{`${formatTime(position)} / ${formatTime(duration)}`}</div>
+          </Box>
+        )}
+
         <Box
           sx={{
             display: "flex",

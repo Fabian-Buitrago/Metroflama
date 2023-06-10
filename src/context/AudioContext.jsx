@@ -7,6 +7,8 @@ export const AudioProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioData, setAudioData] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [duration, setDuration] = useState(0);
+  const [position, setPosition] = useState(0);
 
   useEffect(() => {
     const storedAudioData = localStorage.getItem("audioData");
@@ -16,7 +18,7 @@ export const AudioProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // if (isEmpty(audioData)) return; 
+    // if (isEmpty(audioData)) return;
     localStorage.setItem("audioData", JSON.stringify(audioData));
   }, [audioData]);
 
@@ -29,6 +31,10 @@ export const AudioProvider = ({ children }) => {
         setCurrentAudio,
         isPlaying,
         setIsPlaying,
+        duration,
+        setDuration,
+        position,
+        setPosition,
       }}
     >
       {children}

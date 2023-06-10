@@ -4,7 +4,9 @@ import * as Tone from "tone";
 import { AudioContext } from "../context/AudioContext";
 
 const useAudioPlayer = () => {
-  const { setIsPlaying, currentAudio } = useContext(AudioContext);
+  let interval = 0;
+  const { setIsPlaying, currentAudio, setDuration, setPosition, duration } =
+    useContext(AudioContext);
   const {
     title,
     tempo,
@@ -22,7 +24,9 @@ const useAudioPlayer = () => {
       startPlayback();
     } else {
       cleanUpToneResources();
+      clearInterval(interval);
     }
+    return () => clearInterval(interval);
   }, [currentAudio]);
 
   const synthRef = useRef(null);
@@ -121,6 +125,17 @@ const useAudioPlayer = () => {
       playerRef.current
         .sync()
         .start(Tone.Time("2:0"), audioBuffer.silenceDuration);
+
+      setDuration(playerRef?.current?.buffer.duration);
+
+      interval = setInterval(() => {
+        if (
+          Math.round(Tone.Transport.seconds) <=
+          playerRef?.current?.buffer.duration
+        ) {
+          setPosition(Tone.Transport.seconds);
+        }
+      }, 500);
     }
   };
 
@@ -135,10 +150,19 @@ const useAudioPlayer = () => {
     Tone.Transport.pause();
   };
 
+  const handleSeek = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x position within the element.
+    const seek = (x / e.currentTarget.offsetWidth) * duration;
+    Tone.Transport.seconds = seek;
+    setPosition(seek);
+  };
+
   return {
     startPlayback,
     pausePlayback,
     resumePlayback,
+    handleSeek,
   };
 };
 

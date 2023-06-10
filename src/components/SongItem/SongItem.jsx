@@ -60,7 +60,7 @@ const SongItem = ({ song, index, handleFocus }) => {
     return () => {
       debouncedOnClick.cancel();
     };
-  }, [debouncedOnClick]);
+  }, []);
 
   const updateSong = (e) => {
     const { name, value } = e.target;
@@ -94,7 +94,7 @@ const SongItem = ({ song, index, handleFocus }) => {
 
   const updateSongs = () => {
     if (!isValidToSave()) return showSnackbar(EMPTY_MESSAGE_ERROR);
-    isPlaying && setCurrentAudio(null);
+    setCurrentAudio(null);
     handleFocus();
     const updatedObj = { ...songInfo };
     const updatedData = [...audioData];
