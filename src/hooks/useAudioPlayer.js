@@ -5,7 +5,7 @@ import { AudioContext } from "../context/AudioContext";
 
 const useAudioPlayer = () => {
   let interval = 0;
-  const { setIsPlaying, currentAudio, setDuration, setPosition, duration } =
+  const { setIsPlaying, currentAudio, setDuration, setPosition } =
     useContext(AudioContext);
   const {
     title,
@@ -61,6 +61,9 @@ const useAudioPlayer = () => {
     samplerRef.current = null;
 
     speechSynthesisRef.current = null;
+
+    setPosition(0);
+    setDuration(0);
   };
 
   const activateAudioInBrowsers = () => {
@@ -150,12 +153,10 @@ const useAudioPlayer = () => {
     Tone.Transport.pause();
   };
 
-  const handleSeek = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left; // x position within the element.
-    const seek = (x / e.currentTarget.offsetWidth) * duration;
+  const handleSeek = (e, newValue) => {
+    const seek = newValue;
     Tone.Transport.seconds = seek;
-    setPosition(seek);
+    setPosition(Math.round(seek));
   };
 
   return {

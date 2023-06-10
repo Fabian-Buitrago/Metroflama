@@ -8,6 +8,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SvgIcon from "@mui/material/SvgIcon";
 import LinearProgress from "@mui/material/LinearProgress";
+import Slider from "@mui/material/Slider";
 
 import useMetronome from "../../hooks/useMetronome";
 import { AudioContext } from "../../context/AudioContext";
@@ -41,6 +42,21 @@ export function PlaybackControls() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  const marks = [
+    {
+      value: 0,
+    },
+    {
+      value: 20,
+    },
+    {
+      value: 37,
+    },
+    {
+      value: 100,
+    },
+  ];
+
   return (
     currentAudio && (
       <Card
@@ -60,19 +76,42 @@ export function PlaybackControls() {
         </CardContent>
 
         {soundStatus === "on" && (
-          <Box sx={{ width: "70%", paddingTop: 2 }}>
-            <LinearProgress
+          <Box sx={{ width: "70%" }}>
+            <Slider
+              aria-label="time-indicator"
+              size="small"
+              value={position}
+              min={0}
+              step={1}
+              max={duration}
+              marks={marks}
+              onChange={handleSeek}
               sx={{
-                cursor: "pointer",
+                height: 4,
+                padding: 0,
+                "& .MuiSlider-thumb": {
+                  width: 8,
+                  height: 8,
+                  transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                  "&:before": {
+                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                  },
+                  "&:hover, &.Mui-focusVisible": {
+                    boxShadow: "0px 0px 0px 8px rgb(0 0 0 / 16%)",
+                  },
+                  "&.Mui-active": {
+                    width: 20,
+                    height: 20,
+                  },
+                },
+                "& .MuiSlider-rail": {
+                  opacity: 0.28,
+                },
               }}
-              onClick={handleSeek}
-              variant="determinate"
-              value={(position / duration) * 100}
             />
             <div>{`${formatTime(position)} / ${formatTime(duration)}`}</div>
           </Box>
         )}
-
         <Box
           sx={{
             display: "flex",
