@@ -20,6 +20,9 @@ const useAudioPlayer = () => {
   } = currentAudio || {};
 
   useEffect(() => {
+    setPosition(0);
+    setDuration(0);
+
     if (currentAudio?.title) {
       startPlayback();
     } else {
@@ -61,9 +64,6 @@ const useAudioPlayer = () => {
     samplerRef.current = null;
 
     speechSynthesisRef.current = null;
-
-    setPosition(0);
-    setDuration(0);
   };
 
   const activateAudioInBrowsers = () => {

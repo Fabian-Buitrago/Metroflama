@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,12 +7,15 @@ import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SvgIcon from "@mui/material/SvgIcon";
-import LinearProgress from "@mui/material/LinearProgress";
 import Slider from "@mui/material/Slider";
+import TextField from "@mui/material/TextField";
+import * as Tone from "tone";
+import { styled } from "@mui/material/styles";
 
 import useMetronome from "../../hooks/useMetronome";
 import { AudioContext } from "../../context/AudioContext";
 import styles from "./playbackControls.module.css";
+import Markers from "../Markers/Markers";
 
 const PlayAnimation = (props) => {
   return (
@@ -31,10 +34,33 @@ const PlayAnimation = (props) => {
   );
 };
 
+const StyledTextField = styled(TextField)({
+  "& .MuiInputLabel-root": {
+    right: 0,
+    textAlign: "center",
+  },
+  "& .MuiInputLabel-shrink": {
+    margin: "0 auto",
+    position: "absolute",
+    right: "0",
+    left: "0",
+    top: "-3px",
+    width: "150px",
+    background: "white",
+  },
+  "& .MuiOutlinedInput-root.Mui-focused": {
+    "& legend ": {
+      display: "none",
+    },
+  },
+});
+
 export function PlaybackControls() {
   const { handleControl, isPlaying, handleSeek } = useMetronome();
   const { currentAudio, duration, position } = useContext(AudioContext);
   const { title, tempo, timeSignature, soundStatus } = currentAudio || {};
+  const [markerName, setMarkerName] = useState("");
+  const [markers, setMarkers] = useState([]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -42,20 +68,24 @@ export function PlaybackControls() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  const marks = [
-    {
-      value: 0,
-    },
-    {
-      value: 20,
-    },
-    {
-      value: 37,
-    },
-    {
-      value: 100,
-    },
-  ];
+  const addMarker = () => {
+    if (markers.length < 6) {
+      const newMarker = {
+        name: markerName,
+        value: Math.round(Tone.Transport.seconds),
+      };
+      setMarkers([...markers, newMarker]);
+      setMarkerName(""); // Reset the input field
+    }
+  };
+
+  const removeMarker = (markerToRemove) => {
+    setMarkers(markers.filter((marker) => marker !== markerToRemove));
+  };
+
+  const goToMarkerTime = (time) => {
+    Tone.Transport.seconds = time;
+  };
 
   return (
     currentAudio && (
@@ -84,7 +114,7 @@ export function PlaybackControls() {
               min={0}
               step={1}
               max={duration}
-              marks={marks}
+              marks={markers}
               onChange={handleSeek}
               sx={{
                 height: 4,
@@ -138,7 +168,7 @@ export function PlaybackControls() {
                   className={styles.pauseIcon}
                   sx={{ height: 54, width: 54 }}
                 />
-                <PlayAnimation className={styles.svgImage} />
+                {/* <PlayAnimation className={styles.svgImage} /> */}
               </div>
             ) : (
               <PlayArrowIcon
@@ -156,6 +186,41 @@ export function PlaybackControls() {
             {timeSignature}
           </Typography>
         </Box>
+        {soundStatus === "on" && (
+          <Box sx={{ width: "70%" }}>
+            {markers.map((marker, index) => (
+              <Markers
+                key={index}
+                name={marker.name}
+                onClick={() => goToMarkerTime(marker.value)}
+                markNumber={index + 1}
+                remove={() => removeMarker(marker)}
+              />
+            ))}
+
+            <form
+              className={styles.marksForm}
+              onSubmit={(e) => {
+                e.preventDefault();
+                addMarker();
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <StyledTextField
+                focused
+                color="primary"
+                label="Marcador"
+                value={markerName}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setMarkerName(e.target.value);
+                }}
+                size="small"
+              />
+            </form>
+          </Box>
+        )}
       </Card>
     )
   );
