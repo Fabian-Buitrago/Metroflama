@@ -44,8 +44,8 @@ const StyledTextField = styled(TextField)({
     position: "absolute",
     right: "0",
     left: "0",
-    top: "-3px",
-    width: "150px",
+    top: "-4px",
+    width: "94px",
     background: "white",
   },
   "& .MuiOutlinedInput-root.Mui-focused": {
