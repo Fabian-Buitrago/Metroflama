@@ -24,6 +24,7 @@ export const CreateSong = ({ onClose }) => {
         beatPan: -1,
         beatVolume: 0,
         soundStatus: "on",
+        audioPath: null,
       };
       onClose();
       setAudioData([...audioData, audioInput]);

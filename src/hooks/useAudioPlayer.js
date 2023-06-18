@@ -112,13 +112,13 @@ const useAudioPlayer = () => {
 
     loopRef.current = newLoop;
 
-    if (!speechSynthesisRef.current) {
-      speechSynthesisRef.current = new SpeechSynthesisUtterance();
-      speechSynthesisRef.current.lang = "es-ES";
-      speechSynthesisRef.current.text = title;
-    }
+    // if (!speechSynthesisRef.current) {
+    //   speechSynthesisRef.current = new SpeechSynthesisUtterance();
+    //   speechSynthesisRef.current.lang = "es-ES";
+    //   speechSynthesisRef.current.text = title;
+    // }
 
-    window.speechSynthesis.speak(speechSynthesisRef.current);
+    // window.speechSynthesis.speak(speechSynthesisRef.current);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     Tone.Transport.start();
